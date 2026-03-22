@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resultados: Hábitos de Estudio</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #f0ebf8;
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  .form-wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .header-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12);
+    border-top: 10px solid #673ab7;
+  }
+  .header-body { padding: 24px; }
+  .form-title {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 26px;
+    color: #202124;
+    margin-bottom: 8px;
+  }
+  .form-desc { font-size: 14px; color: #5f6368; line-height: 1.6; }
+
+  .section-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12);
+    border-left: 6px solid #673ab7;
+  }
+  .section-title {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 17px;
+    color: #673ab7;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .section-desc { font-size: 13px; color: #5f6368; }
+
+  .content-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12);
+    overflow-x: auto;
+  }
+
+  /* Summary chips */
+  .summary-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+  .chip {
+    background: #f1eafa;
+    color: #673ab7;
+    border-radius: 16px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .chip span { font-size: 18px; font-weight: 700; }
+
+  /* Main table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 620px;
+  }
+  thead tr {
+    background: #673ab7;
+    color: #fff;
+  }
+  thead th {
+    padding: 12px 14px;
+    text-align: left;
+    font-family: 'Google Sans', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  tbody tr:nth-child(even) { background: #faf8ff; }
+  tbody tr:nth-child(odd)  { background: #fff; }
+  tbody tr:hover { background: #f1eafa; transition: background .15s; }
+  tbody td {
+    padding: 11px 14px;
+    color: #3c4043;
+    border-bottom: 1px solid #ede7f6;
+    vertical-align: middle;
+  }
+
+  .badge-yes {
+    background: #e6f4ea;
+    color: #137333;
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge-no {
+    background: #fce8e6;
+    color: #c5221f;
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .badge-num {
+    background: #673ab7;
+    color: #fff;
+    border-radius: 12px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .person-name { font-weight: 500; color: #202124; }
+  .person-num  { color: #9e9e9e; font-size: 12px; }
+
+  /* Per-person detail cards */
+  .person-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  .person-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12);
+    overflow: hidden;
+    border-top: 4px solid #673ab7;
+  }
+  .person-card-header {
+    background: #f8f5ff;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #ede7f6;
+  }
+  .person-card-name {
+    font-family: 'Google Sans', sans-serif;
+    font-size: 15px;
+    color: #202124;
+    font-weight: 700;
+  }
+  .person-card-meta {
+    font-size: 12px;
+    color: #5f6368;
+    margin-top: 2px;
+  }
+  .person-card-body { padding: 12px 16px; }
+  .answer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 6px 0;
+    border-bottom: 1px solid #f3eefc;
+    gap: 8px;
+  }
+  .answer-row:last-child { border-bottom: none; }
+  .answer-q {
+    font-size: 12px;
+    color: #5f6368;
+    line-height: 1.4;
+    flex: 1;
+  }
+  .answer-q strong { color: #673ab7; }
+
+  .uapa-footer {
+    text-align: center;
+    font-size: 12px;
+    color: #9aa0a6;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="form-wrapper">
+
+  <!-- Header -->
+  <div class="header-card">
+    <div class="header-body">
+      <h1 class="form-title">Resultados del Cuestionario</h1>
+      <p class="form-desc">Registro de respuestas de 10 participantes al cuestionario sobre hábitos de estudio. Cada pregunta fue respondida por 2 personas. Universidad Abierta para Adultos (UAPA) — 2026.</p>
+    </div>
+  </div>
+
+  <!-- Resumen -->
+  <div class="section-card">
+    <div class="section-title">Resumen General</div>
+    <div class="section-desc">Total de participantes y preguntas registradas.</div>
+  </div>
+
+  <div class="content-card">
+    <div class="summary-row">
+      <div class="chip">👥 Participantes: <span>10</span></div>
+      <div class="chip">❓ Preguntas totales: <span>8</span></div>
+      <div class="chip">📋 Respuestas por persona: <span>2</span></div>
+      <div class="chip">✅ Total respuestas: <span>20</span></div>
+    </div>
+  </div>
+
+  <!-- Tabla general -->
+  <div class="section-card">
+    <div class="section-title">Tabla de Participantes</div>
+    <div class="section-desc">Nombre, edad y preguntas asignadas (Sección B, P4–P8).</div>
+  </div>
+
+  <div class="content-card">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Edad</th>
+          <th>Preguntas asignadas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="person-num">01</td><td class="person-name">María González</td><td>17</td><td>P4 y P5</td></tr>
+        <tr><td class="person-num">02</td><td class="person-name">Carlos Ramírez</td><td>18</td><td>P4 y P6</td></tr>
+        <tr><td class="person-num">03</td><td class="person-name">Paola Jiménez</td><td>19</td><td>P5 y P7</td></tr>
+        <tr><td class="person-num">04</td><td class="person-name">Luis Herrera</td><td>20</td><td>P5 y P8</td></tr>
+        <tr><td class="person-num">05</td><td class="person-name">Valentina Reyes</td><td>21</td><td>P6 y P7</td></tr>
+        <tr><td class="person-num">06</td><td class="person-name">Andrés Mejía</td><td>19</td><td>P6 y P8</td></tr>
+        <tr><td class="person-num">07</td><td class="person-name">Gabriela Torres</td><td>18</td><td>P7 y P4</td></tr>
+        <tr><td class="person-num">08</td><td class="person-name">Diego Medina</td><td>20</td><td>P7 y P8</td></tr>
+        <tr><td class="person-num">09</td><td class="person-name">Sofía Castillo</td><td>17</td><td>P8 y P6</td></tr>
+        <tr><td class="person-num">10</td><td class="person-name">Josué Mendoza</td><td>21</td><td>P4 y P8</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Fichas individuales -->
+  <div class="section-card">
+    <div class="section-title">Respuestas Individuales</div>
+    <div class="section-desc">Detalle de las respuestas de cada participante a sus preguntas asignadas.</div>
+  </div>
+
+  <div class="content-card">
+    <div class="person-grid">
+
+      <!-- Persona 1: P4 y P5 -->
+      <div class="person-card">
+        <div class="person-card-header">
+          <div class="person-card-name">01 · María González</div>
+          <div class="person-card-meta">17 años</div>
+        </div>
+        <div class="person-card-body">
+          <div class="answer-row">
+            <div class="answer-q"><strong>P4.</strong> ¿Organizas un horario semanal de estudio y lo cumples?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+          <div class="answer-row">
+            <div class="answer-q"><strong>P5.</strong> ¿Dedicas al menos 2 horas diarias al estudio fuera de clases?</div>
+            <span class="badge-no">No</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persona 2: P4 y P6 -->
+      <div class="person-card">
+        <div class="person-card-header">
+          <div class="person-card-name">02 · Carlos Ramírez</div>
+          <div class="person-card-meta">18 años</div>
+        </div>
+        <div class="person-card-body">
+          <div class="answer-row">
+            <div class="answer-q"><strong>P4.</strong> ¿Organizas un horario semanal de estudio y lo cumples?</div>
+            <span class="badge-no">No</span>
+          </div>
+          <div class="answer-row">
+            <div class="answer-q"><strong>P6.</strong> ¿Utilizas técnicas de estudio como mapas conceptuales, resúmenes o fichas?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persona 3: P5 y P7 -->
+      <div class="person-card">
+        <div class="person-card-header">
+          <div class="person-card-name">03 · Paola Jiménez</div>
+          <div class="person-card-meta">19 años</div>
+        </div>
+        <div class="person-card-body">
+          <div class="answer-row">
+            <div class="answer-q"><strong>P5.</strong> ¿Dedicas al menos 2 horas diarias al estudio fuera de clases?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+          <div class="answer-row">
+            <div class="answer-q"><strong>P7.</strong> ¿Realizas las lecturas asignadas antes de cada clase?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persona 4: P5 y P8 -->
+      <div class="person-card">
+        <div class="person-card-header">
+          <div class="person-card-name">04 · Luis Herrera</div>
+          <div class="person-card-meta">20 años</div>
+        </div>
+        <div class="person-card-body">
+          <div class="answer-row">
+            <div class="answer-q"><strong>P5.</strong> ¿Dedicas al menos 2 horas diarias al estudio fuera de clases?</div>
+            <span class="badge-no">No</span>
+          </div>
+          <div class="answer-row">
+            <div class="answer-q"><strong>P8.</strong> ¿Revisas tus notas y apuntes regularmente, no solo en épocas de examen?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persona 5: P6 y P7 -->
+      <div class="person-card">
+        <div class="person-card-header">
+          <div class="person-card-name">05 · Valentina Reyes</div>
+          <div class="person-card-meta">21 años</div>
+        </div>
+        <div class="person-card-body">
+          <div class="answer-row">
+            <div class="answer-q"><strong>P6.</strong> ¿Utilizas técnicas de estudio como mapas conceptuales, resúmenes o fichas?</div>
+            <span class="badge-no">No</span>
+          </div>
+          <div class="answer-row">
+            <div class="answer-q"><strong>P7.</strong> ¿Realizas las lecturas asignadas antes de cada clase?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persona 6: P6 y P8 -->
+      <div class="person-card">
+        <div class="person-card-header">
+          <div class="person-card-name">06 · Andrés Mejía</div>
+          <div class="person-card-meta">19 años</div>
+        </div>
+        <div class="person-card-body">
+          <div class="answer-row">
+            <div class="answer-q"><strong>P6.</strong> ¿Utilizas técnicas de estudio como mapas conceptuales, resúmenes o fichas?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+          <div class="answer-row">
+            <div class="answer-q"><strong>P8.</strong> ¿Revisas tus notas y apuntes regularmente, no solo en épocas de examen?</div>
+            <span class="badge-no">No</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persona 7: P7 y P4 -->
+      <div class="person-card">
+        <div class="person-card-header">
+          <div class="person-card-name">07 · Gabriela Torres</div>
+          <div class="person-card-meta">18 años</div>
+        </div>
+        <div class="person-card-body">
+          <div class="answer-row">
+            <div class="answer-q"><strong>P7.</strong> ¿Realizas las lecturas asignadas antes de cada clase?</div>
+            <span class="badge-no">No</span>
+          </div>
+          <div class="answer-row">
+            <div class="answer-q"><strong>P4.</strong> ¿Organizas un horario semanal de estudio y lo cumples?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persona 8: P7 y P8 -->
+      <div class="person-card">
+        <div class="person-card-header">
+          <div class="person-card-name">08 · Diego Medina</div>
+          <div class="person-card-meta">20 años</div>
+        </div>
+        <div class="person-card-body">
+          <div class="answer-row">
+            <div class="answer-q"><strong>P7.</strong> ¿Realizas las lecturas asignadas antes de cada clase?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+          <div class="answer-row">
+            <div class="answer-q"><strong>P8.</strong> ¿Revisas tus notas y apuntes regularmente, no solo en épocas de examen?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persona 9: P8 y P6 -->
+      <div class="person-card">
+        <div class="person-card-header">
+          <div class="person-card-name">09 · Sofía Castillo</div>
+          <div class="person-card-meta">17 años</div>
+        </div>
+        <div class="person-card-body">
+          <div class="answer-row">
+            <div class="answer-q"><strong>P8.</strong> ¿Revisas tus notas y apuntes regularmente, no solo en épocas de examen?</div>
+            <span class="badge-no">No</span>
+          </div>
+          <div class="answer-row">
+            <div class="answer-q"><strong>P6.</strong> ¿Utilizas técnicas de estudio como mapas conceptuales, resúmenes o fichas?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persona 10: P4 y P8 -->
+      <div class="person-card">
+        <div class="person-card-header">
+          <div class="person-card-name">10 · Josué Mendoza</div>
+          <div class="person-card-meta">21 años</div>
+        </div>
+        <div class="person-card-body">
+          <div class="answer-row">
+            <div class="answer-q"><strong>P4.</strong> ¿Organizas un horario semanal de estudio y lo cumples?</div>
+            <span class="badge-no">No</span>
+          </div>
+          <div class="answer-row">
+            <div class="answer-q"><strong>P8.</strong> ¿Revisas tus notas y apuntes regularmente, no solo en épocas de examen?</div>
+            <span class="badge-yes">Sí</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="uapa-footer">Universidad Abierta para Adultos (UAPA) — 2026</div>
+</div>
+</body>
+</html>
